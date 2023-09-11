@@ -11,7 +11,6 @@ contract MarToken is ERC20, Ownable, ERC20Permit {
     uint8 private _decimals;
 
     event Burn(address indexed from, uint256 value);
-    event EtherRecovered(uint256 amount);
     event TokensRecovered(address tokenAddress, uint256 amount);
 
     // The constructor initializes the contract with necessary parameters.
@@ -56,14 +55,8 @@ contract MarToken is ERC20, Ownable, ERC20Permit {
     }
 
     // Receives ether sent to the contract.
-    receive() external payable {}
-
-    // Allows the contract owner to recover ether accidentally sent to the contract.
-    function recoverEther(uint256 amount) external onlyOwner {
-        require(amount <= address(this).balance, "Insufficient balance");
-        payable(owner()).transfer(amount);
-
-        emit EtherRecovered(amount);
+    receive() external payable {
+        revert("Contract cannot accept Ether");
     }
 
     // Allows the contract owner to recover tokens other than MAR tokens accidentally sent to the contract.

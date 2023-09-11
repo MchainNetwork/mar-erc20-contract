@@ -9,7 +9,7 @@ This repository contains the smart contract for creating the MAR ERC20 token, a 
 1. **ERC20 Compliant**: The MAR token adheres to the ERC20 standard, ensuring compatibility with a wide range of services and applications on the Ethereum network.
 2. **Secure Contract**: Includes additional protections against transfers to undesirable addresses (zero and DEAD addresses).
 3. **ERC20Permit**: Implements the ERC20Permit standard, an extension of the ERC20 standard that allows for gasless transactions. Users can delegate the allowance of their tokens to a spender without sending a transaction on-chain.
-4. **Funds Recovery**: Allows the contract owner to recover accidental funds (both ETH and ERC20 tokens) sent to the contract.
+4. **Funds Recovery**: Allows the contract owner to recover accidental ERC20 tokens sent to the contract.
 5. **Token Burn Function**: Users can burn their MAR tokens, permanently removing them from circulation.
 
 ## Repository Structure
