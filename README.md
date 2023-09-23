@@ -10,6 +10,7 @@ This repository contains the smart contract for creating the MAR ERC20 token, a 
 2. **ERC20Permit**: Implements the ERC20Permit standard, an extension of the ERC20 standard that allows for gasless transactions. Users can delegate the allowance of their tokens to a spender without sending a transaction on-chain.
 3. **Funds Recovery**: Allows the contract owner to recover accidental ERC20 tokens sent to the contract.
 4. **Token Burn Function**: Users can burn their MAR tokens, permanently removing them from circulation.
+5. **Bulk Transfer Function**: Enables users to send MAR tokens to multiple recipients in a single transaction, thereby saving gas and improving transaction efficiency.
 
 ## Repository Structure
 
