@@ -7,7 +7,7 @@ const {
 } = require('@openzeppelin/test-helpers');
 const MarToken = artifacts.require('MarToken');
 
-contract('MarToken', function ([deployer, owner, recipient, anotherAccount]) {
+contract('MarToken', function ([deployer, owner, recipient, recipient2]) {
   const initialAmount = new BN(110000000);
   const tokenName = 'MarTokenName';
   const tokenSymbol = 'MRT';
@@ -108,6 +108,90 @@ contract('MarToken', function ([deployer, owner, recipient, anotherAccount]) {
       await expectRevert(
         this.token.burn(burnAmount, { from: owner }),
         'ERC20: burn amount exceeds balance'
+      );
+    });
+  });
+
+  describe('Bulk Transfer Functionality', function () {
+    beforeEach(async function () {
+      // Approve the contract to spend tokens on behalf of the owner
+      const approvalAmount = new BN(1000000000000); // Set an appropriate value that covers all the tokens you're transferring
+      await this.token.approve(this.token.address, approvalAmount, {
+        from: owner,
+      });
+    });
+
+    it('should allow bulk transfer of tokens', async function () {
+      const recipients = [recipient, recipient2];
+      const amounts = [new BN(100), new BN(200)];
+
+      await this.token.bulkTransfer(recipients, amounts, { from: owner });
+
+      const recipientBalance1 = await this.token.balanceOf(recipient);
+      const recipientBalance2 = await this.token.balanceOf(recipient2);
+
+      expect(recipientBalance1).to.be.bignumber.equal(amounts[0]);
+      expect(recipientBalance2).to.be.bignumber.equal(amounts[1]);
+    });
+
+    it('should emit BulkTransferCompleted event', async function () {
+      const recipients = [recipient, recipient2];
+      const amounts = [new BN(100), new BN(200)];
+
+      const receipt = await this.token.bulkTransfer(recipients, amounts, {
+        from: owner,
+      });
+      expectEvent(receipt, 'BulkTransferCompleted', {
+        token: this.token.address,
+        sender: owner,
+        totalAmount: amounts.reduce((acc, val) => acc.add(val), new BN(0)),
+      });
+    });
+
+    it('should not allow bulk transfer if lengths of recipients and amounts do not match', async function () {
+      const recipients = [recipient];
+      const amounts = [new BN(100), new BN(200)];
+
+      await expectRevert(
+        this.token.bulkTransfer(recipients, amounts, { from: owner }),
+        'The number of recipients should be equal to the number of amounts'
+      );
+    });
+
+    it('should transfer the correct amount to recipients in bulk transfer', async function () {
+      const recipients = [recipient, recipient2];
+      const amounts = [new BN(100), new BN(200)];
+
+      // Record initial balances of recipients
+      const initialBalance1 = await this.token.balanceOf(recipient);
+      const initialBalance2 = await this.token.balanceOf(recipient2);
+
+      // Execute bulk transfer
+      await this.token.bulkTransfer(recipients, amounts, { from: owner });
+
+      // Check new balances of recipients
+      const finalBalance1 = await this.token.balanceOf(recipient);
+      const finalBalance2 = await this.token.balanceOf(recipient2);
+
+      // Assert that recipients received the correct amount
+      expect(finalBalance1).to.be.bignumber.equal(
+        initialBalance1.add(amounts[0])
+      );
+      expect(finalBalance2).to.be.bignumber.equal(
+        initialBalance2.add(amounts[1])
+      );
+    });
+
+    it('should not allow bulk transfer if total amount exceeds balance', async function () {
+      const recipients = [recipient, recipient2];
+
+      const senderBalance = await this.token.balanceOf(owner);
+      const exceedingAmount = senderBalance.add(new BN(1));
+      const amounts = [new BN(100), exceedingAmount];
+
+      await expectRevert(
+        this.token.bulkTransfer(recipients, amounts, { from: owner }),
+        'Insufficient balance for bulk transfer'
       );
     });
   });

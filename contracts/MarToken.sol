@@ -110,7 +110,7 @@ contract MarToken is ERC20, Ownable, ERC20Permit {
                 recipients[i] != address(0),
                 "Recipient address cannot be zero"
             );
-            token.safeTransferFrom(address(this), recipients[i], amounts[i]);
+            token.safeTransfer(recipients[i], amounts[i]);
         }
 
         emit BulkTransferCompleted(address(token), msg.sender, totalAmount);
