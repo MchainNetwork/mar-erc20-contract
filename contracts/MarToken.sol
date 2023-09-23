@@ -11,7 +11,11 @@ contract MarToken is ERC20, Ownable, ERC20Permit {
     uint8 private _decimals;
 
     event Burn(address indexed from, uint256 value);
-    event TokensRecovered(address tokenAddress, uint256 amount);
+    event TokensRecovered(
+        address indexed tokenAddress,
+        address indexed recipient,
+        uint256 amount
+    );
 
     // The constructor initializes the contract with necessary parameters.
     constructor(
@@ -62,12 +66,15 @@ contract MarToken is ERC20, Ownable, ERC20Permit {
     // Allows the contract owner to recover tokens other than MAR tokens accidentally sent to the contract.
     function recoverTokens(
         address tokenAddress,
-        uint256 amount
+        address recipient
     ) external onlyOwner {
         require(tokenAddress != address(this), "Cannot recover MarToken");
+        require(recipient != address(0), "Cannot send to zero address");
         IERC20 token = IERC20(tokenAddress);
-        token.safeTransfer(owner(), amount);
+        uint256 balance = token.balanceOf(address(this));
+        require(balance > 0, "No tokens to recover");
+        token.safeTransfer(recipient, balance);
 
-        emit TokensRecovered(tokenAddress, amount);
+        emit TokensRecovered(tokenAddress, recipient, balance);
     }
 }
