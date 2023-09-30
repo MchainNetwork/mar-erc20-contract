@@ -1,8 +1,8 @@
 const MarToken = artifacts.require('MarToken');
 
 module.exports = function (deployer) {
-  const tokenName = 'WAR';
-  const tokenSymbol = 'WAR';
+  const tokenName = 'Mchain Token';
+  const tokenSymbol = 'MAR';
   const decimalUnits = 18;
   const initialAmount = 110000000;
   const custodianAddress = process.env.CUSTODIAN_ADDRESS;

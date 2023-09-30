@@ -9,8 +9,8 @@ const MarToken = artifacts.require('MarToken');
 
 contract('MarToken', function ([deployer, owner, recipient, recipient2]) {
   const initialAmount = new BN(110000000);
-  const tokenName = 'MarTokenName';
-  const tokenSymbol = 'MRT';
+  const tokenName = 'Mchain Token';
+  const tokenSymbol = 'MAR';
   const decimalUnits = new BN(18);
   const zeroAddress = constants.ZERO_ADDRESS;
   const custodianAddress = owner;
