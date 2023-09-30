@@ -31,10 +31,12 @@ Before proceeding with the deployment, you need to set up your environment varia
 ```sh
 DEPLOYER_ADDRESS=0xYourDeployerAddressHere
 CUSTODIAN_ADDRESS=0xYourCustodianAddressHere
+ETHERSCAN_API_KEY=YourEtherscanApiKeyHere
 ```
 
 - `DEPLOYER_ADDRESS`: The Ethereum address from which you will deploy the contract. Ensure you have control over this address and have sufficient Ether to cover the gas costs of the deployment.
 - `CUSTODIAN_ADDRESS`: The Ethereum address that will be registered as the initial custodian of the tokens.
+- `ETHERSCAN_API_KEY`: The Etherscan API key. 
 
 ## Deployment Instructions
 
