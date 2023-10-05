@@ -1,0 +1,38 @@
+{
+  "name": "mar-erc20-contract",
+  "version": "0.1.0",
+  "description": "This repository houses the MarToken smart contract, a secure and optimized ERC-20 token on the Ethereum network. Refer to the README for setup and deployment instructions.",
+  "scripts": {
+    "test": "truffle test",
+    "compile": "truffle compile",
+    "migrate": "truffle migrate",
+    "migrate:dashboard": "truffle migrate --network dashboard",
+    "truffle:dashboard": "truffle dashboard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MchainNetwork/mar-erc20-contract.git"
+  },
+  "keywords": [
+    "mchain",
+    "erc20",
+    "smart contract",
+    "ethereum",
+    "solidity"
+  ],
+  "author": "Mchain",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.3",
+    "@openzeppelin/test-helpers": "^0.5.16",
+    "chai": "^4.3.8",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "open": "^9.1.0",
+    "papaparse": "^5.4.1",
+    "web3": "^4.1.2"
+  },
+  "devDependencies": {
+    "truffle-plugin-verify": "^0.6.5"
+  }
+}
